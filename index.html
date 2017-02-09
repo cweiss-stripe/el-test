@@ -56,10 +56,10 @@
       </label>
     </form>
     <script>
-      const stripe = Stripe('pk_RXwtgk4Z5VR82S94vtwmam6P8qMXQ');
-      const elements = stripe.elements();
+      var stripe = Stripe('pk_RXwtgk4Z5VR82S94vtwmam6P8qMXQ');
+      var elements = stripe.elements();
 
-      const card = elements.create('card', {
+      var card = elements.create('card', {
         iconColor: 'magenta',
         style: {
           base: {
@@ -74,7 +74,7 @@
       });
       card.mount('#card-field');
 
-      document.querySelector('form').addEventListener('submit', function(ev) {
+      document.getElementById('checkout').addEventListener('submit', function(ev) {
         ev.preventDefault();
         stripe.createToken(card).then(function(result) {
           console.log(result);
