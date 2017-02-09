@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <script src="https://js.stripe.com/v3/stripe-beta-e2b2c18.js"></script>
+    <style>
+      .Field {
+        display: block;
+        padding: 10px;
+        background-color: pink;
+        width: 380px;
+        border: 0;
+        color: black;
+        font-size: 14px;
+        font-family: monospace;
+      }
+
+      .Field:focus, .Field.StripeElement--focus {
+        outline: 0;
+        background-color: white;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      ::placeholder {
+        color: #454545;
+      }
+      ::-webkit-input-placeholder {
+        color: #454545;
+      }
+      input:focus::placeholder {
+        color: #ccc;
+      }
+      input:focus::-webkit-input-placeholder {
+        color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      My Checkout
+    </h1>
+    <form id="checkout">
+      <label>
+        Your name
+        <input class="Field" placeholder="Michelle" />
+      </label>
+      <label>
+        Card details
+        <span id="card-field" class="Field"></span>
+      </label>
+      <label>
+        Your favorite color
+        <input class="Field" placeholder="Yellow" />
+      </label>
+    </form>
+    <script>
+      const stripe = Stripe('pk_RXwtgk4Z5VR82S94vtwmam6P8qMXQ');
+      const elements = stripe.elements();
+
+      const card = elements.create('card', {
+        iconColor: 'magenta',
+        style: {
+          base: {
+            fontFamily: 'monospace',
+            color: 'black',
+            placeholderColor: '#454545'
+          },
+          focus: {
+            placeholderColor: '#ccc'
+          }
+        }
+      });
+      card.mount('#card-field');
+
+      document.querySelector('form').addEventListener('submit', function(ev) {
+        ev.preventDefault();
+        stripe.createToken(card).then(function(result) {
+          console.log(result);
+        });
+      });
+    </script>
+  </body>
+</html>
